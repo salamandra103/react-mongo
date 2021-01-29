@@ -12,6 +12,16 @@ body {
     height: 100%;
     display: flex;
     flex-flow: column;
+
+    &_unauth {
+        background-color: #4397ff;
+        background: linear-gradient(45, rgba(67, 213, 255, 1) 0%, rgba(67, 151, 255, 1) 100%);
+        background: linear-gradient(#e66465, #9198e5);
+    }
+
+    &__main {
+        flex: 1
+    }
 }
 
 main.page {

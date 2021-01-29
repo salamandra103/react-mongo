@@ -35,9 +35,11 @@ const Main = ({user}) => {
 	}
         
 	return (
-		<div className="page">
+		<div className={
+			!user ? 'page page_unauth' : 'page'
+		}>
 			<Header/>
-			<main className="page">
+			<main class="page__main">
 				<BrowserRouter basename="/">
 					<Switch>
 						<Route exact path="/">
