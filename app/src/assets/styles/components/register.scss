@@ -1,1 +1,16 @@
-.register {}
+.register {
+    height: 100%;
+
+    &__wrapper {
+        max-width: 500px;
+        border-radius: 8px;
+        background-color: #eeeeee;
+        margin: 0 auto;
+        padding: 10px;
+
+        &>p {
+            text-align: center;
+        }
+    }
+
+}

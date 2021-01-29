@@ -35,7 +35,7 @@ const Main = ({user}) => {
 	}
         
 	return (
-		<>
+		<div className="page">
 			<Header/>
 			<main className="page">
 				<BrowserRouter basename="/">
@@ -47,7 +47,7 @@ const Main = ({user}) => {
 				</BrowserRouter>
 			</main>
 			<Footer/>
-		</>
+		</div>
 	);
 }
 
