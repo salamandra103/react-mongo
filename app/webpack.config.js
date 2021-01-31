@@ -1,21 +1,27 @@
 const path = require("path");
+const Dotenv = require('dotenv-webpack');
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 module.exports = {
-	entry: "./src/index.js",
+	entry: "./src/index.ts",
 	output: {
 		path: path.join(__dirname, "dist"),
 		publicPath: "/",
 		filename: "main.js",
 	},
 	resolve: {
-		extensions: [".js", ".jsx"],
+		extensions: ['.tsx', '.ts', '.js', '.jsx'],
 		alias: {
 			"@": path.resolve(__dirname, "./src"),
 		},
 	},
 	module: {
 		rules: [
+			{
+				test: /\.tsx?$/,
+				use: 'ts-loader',
+				exclude: /node_modules/,
+			},
 			{
 				test: /\.(js|jsx)$/,
 				exclude: /node_modules/,
@@ -59,6 +65,7 @@ module.exports = {
 		new HtmlWebpackPlugin({
 			template: "./dist/index.html",
 		}),
+		new Dotenv()
 	],
 	devServer: {
 		contentBase: path.join(__dirname, "dist"),
