@@ -27,5 +27,6 @@ module.exports = {
 			optionalDependencies: false,
 			peerDependencies: false,
 		}],
+		"no-underscore-dangle": ["off"],
 	},
 };

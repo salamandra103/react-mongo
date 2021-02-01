@@ -5,12 +5,12 @@ import Main from "@/layouts/Main";
 
 import store from "./store";
 
-function App() {
+const App: React.FC = () => {
 	return (
 		<Provider store={store}>
 			<Main></Main>
 		</Provider>
-        
+
 	);
 }
 

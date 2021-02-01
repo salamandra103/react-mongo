@@ -3,6 +3,7 @@ const path = require("path");
 const createError = require("http-errors");
 const express = require("express");
 const bodyParser = require("body-parser");
+const cookieParser = require("cookie-parser");
 const fs = require("fs");
 const logger = require("morgan");
 const cors = require("cors");
@@ -18,6 +19,7 @@ app.use(express.static("public"));
 app.use(logger("dev", { stream: logStream }));
 app.use(logger("dev"));
 app.use(jsonParser);
+app.use(cookieParser());
 app.use(express.urlencoded({ extended: false }));
 app.use(cors());
 

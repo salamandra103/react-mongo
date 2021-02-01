@@ -1,6 +1,6 @@
 import React, { SyntheticEvent, useState } from 'react'
 import API from "@/utils/api";
-
+import { AxiosResponse } from '../../node_modules/axios/index';
 
 const Register = () => {
 
@@ -10,10 +10,14 @@ const Register = () => {
 
     function login(e: SyntheticEvent) {
         e.preventDefault();
-        API.post('auth/signup', {
+        API.post('auth/login', {
             email: email,
             password: password,
-        });
+        }).then((res: AxiosResponse<{ token: string }>) => {
+            localStorage.setItem('token', res.data.token);
+        }).catch((err: Error) => {
+            console.log(err);
+        })
     }
 
     return (
