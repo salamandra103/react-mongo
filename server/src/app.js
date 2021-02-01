@@ -11,7 +11,6 @@ const cors = require("cors");
 const app = express();
 const jsonParser = bodyParser.json();
 
-const indexRouter = require("./routes/index");
 const authRouter = require("./routes/auth");
 
 const logStream = fs.createWriteStream("./access.log", { flags: "a" });
@@ -24,7 +23,6 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cors());
 
 // Routers use
-app.use("/api/", indexRouter);
 app.use("/api/auth/", authRouter);
 
 // Catch 404

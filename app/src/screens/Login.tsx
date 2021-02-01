@@ -1,14 +1,17 @@
 import React, { SyntheticEvent, useState } from 'react'
-import API from "@/utils/api";
 import { useHistory, NavLink } from 'react-router-dom'
-
+import API from "@/utils/api";
 import { AxiosResponse } from '../../node_modules/axios/index';
 import { connect } from 'react-redux';
+
+import { setUser } from '@/store/actions/user'
+
 interface Props {
-    user: Object
+    user: Object,
+    setUser: Function
 }
 
-const Register: React.FC<Props> = ({ user }) => {
+const Login: React.FC<Props> = ({ user, setUser }) => {
 
     const history = useHistory();
 
@@ -16,18 +19,25 @@ const Register: React.FC<Props> = ({ user }) => {
     const [password, setPassword] = useState<string>('')
     const [loader, setLoader] = useState<boolean>(false)
 
-    function signup(e: SyntheticEvent) {
+
+    function login(e: SyntheticEvent) {
         e.preventDefault();
-        setLoader(true)
-        // API.post('auth/signup', {
+        setLoader(true);
+        // API.post('auth/login', {
         //     email: email,
         //     password: password,
         // }).then((res: AxiosResponse<{ token: string }>) => {
+        //     localStorage.setItem('token', res.data.token);
+        //     setUser({
+        //         email: email,
+        //         token: res.data.token
+        //     });
         //     setLoader(false)
-        //     history.replace('/login')
+        //     history.replace('/')
+
         // }).catch((err: Error) => {
-        //     console.log(err);
         //     setLoader(false)
+        //     console.log(err);
         // })
         setTimeout(() => {
             setLoader(false)
@@ -38,8 +48,8 @@ const Register: React.FC<Props> = ({ user }) => {
     return (
         <section className="register">
             <div className="register__wrapper">
-                <p>Регистрация</p>
-                <form action="" onSubmit={signup} className="register__form">
+                <p>Авторизация</p>
+                <form action="" onSubmit={login} className="register__form">
                     <label htmlFor="" className="register__label">
                         <input type="text" placeholder="Введите почту" onChange={(e) => {
                             setEmail(e.target.value);
@@ -53,23 +63,37 @@ const Register: React.FC<Props> = ({ user }) => {
                         <span></span>
                     </label>
 
-                    <button type="submit" disabled={loader} className="register__button register__button_register">
-                        <span>Зарегистрироваться</span>
+                    <button type="submit" disabled={loader} className="register__button register__button_login">
+                        <span>Войти</span>
                         {loader ? <img className="loader loader_small" src={require('@/assets/images/icons/loader.svg')} alt="" /> : null}
                     </button>
-                    <NavLink to="/login" className="register__link">Авторизация</NavLink>
+                    <NavLink to="/signup" className="register__link">Регистрация</NavLink>
                 </form>
             </div>
         </section>
     )
 }
 
-interface State {
+interface StateProps {
     user: Object
 }
 
-export default connect((state: State) => {
+interface DispatchProps {
+    setUser: Function
+}
+
+function mapStateToProps(state: StateProps) {
     return {
         user: state.user
     }
-}, null)(Register)
+}
+
+function mapDispatchToProps(dispatch: Function) {
+    return {
+        setUser(user: Object) {
+            dispatch(setUser(user));
+        }
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login)
