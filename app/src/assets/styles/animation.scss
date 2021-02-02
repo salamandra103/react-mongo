@@ -1,0 +1,26 @@
+.slide-enter {
+    transform: translateX(-100vw);
+    opacity: 0;
+}
+
+.slide-enter.slide-enter-active {
+    transform: translateX(0);
+    opacity: 1;
+    transition: .3s;
+}
+
+.slide-exit {
+    transform: translateX(0);
+    opacity: 1;
+
+}
+
+.slide-exit.slide-exit-active {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    transform: translateX(100vw);
+    opacity: 0;
+    transition: .3s;
+}

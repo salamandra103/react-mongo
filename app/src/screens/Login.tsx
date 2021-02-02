@@ -23,26 +23,16 @@ const Login: React.FC<Props> = ({ user, setUser }) => {
     function login(e: SyntheticEvent) {
         e.preventDefault();
         setLoader(true);
-        // API.post('auth/login', {
-        //     email: email,
-        //     password: password,
-        // }).then((res: AxiosResponse<{ token: string }>) => {
-        //     localStorage.setItem('token', res.data.token);
-        //     setUser({
-        //         email: email,
-        //         token: res.data.token
-        //     });
-        //     setLoader(false)
-        //     history.replace('/')
-
-        // }).catch((err: Error) => {
-        //     setLoader(false)
-        //     console.log(err);
-        // })
-        setTimeout(() => {
+        API.post('auth/login', {
+            email: email,
+            password: password,
+        }).then((res: AxiosResponse<{ token: string }>) => {
+            localStorage.setItem('user_info', JSON.stringify({ ...res.data }));
+            setUser(res.data);
+        }).catch((err: Error) => {
             setLoader(false)
-
-        }, 3000)
+            console.log(err);
+        })
     }
 
     return (
@@ -76,10 +66,6 @@ const Login: React.FC<Props> = ({ user, setUser }) => {
 
 interface StateProps {
     user: Object
-}
-
-interface DispatchProps {
-    setUser: Function
 }
 
 function mapStateToProps(state: StateProps) {

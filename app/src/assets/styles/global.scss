@@ -46,7 +46,8 @@ body {
     &_unauth {}
 
     &__main {
-        flex: 1
+        flex: 1;
+        overflow: hidden;
     }
 }
 
