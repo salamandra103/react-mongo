@@ -1,27 +1,41 @@
 import React from "react";
-import { Provider } from "react-redux";
+import { Provider, connect } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
 
 import MainLayout from "@/layouts/MainLayout";
 
 import store from "./store";
 
-const unsubscribe = store.subscribe(() => {
-	console.log(1);
-	console.log(store.getState());
+interface Props {
+	user?: Object
+}
 
-})
-unsubscribe();
+let App: React.FC<Props> = ({ user }) => {
+	return (
+		<BrowserRouter basename="/">
+			<MainLayout />
+		</BrowserRouter>
+	)
+}
 
-const App: React.FC = () => {
+interface State {
+	user: Object
+}
+
+App = connect((state: State) => {
+	return {
+		user: state.user
+	}
+})(App);
+
+const AppWithStore: React.FC = () => {
 	return (
 		<Provider store={store}>
-			<BrowserRouter basename="/">
-				<MainLayout />
-				{store.getState().user ? <div>auth</div> : <div>unauth</div>}
-			</BrowserRouter>
+			<App />
 		</Provider>
 	);
 }
 
-export default App;
+
+
+export default AppWithStore;

@@ -3,7 +3,7 @@ import { Route, Redirect } from 'react-router-dom'
 
 import { connect } from 'react-redux';
 
-const PrivateComponent = ({ component: Component, isAuth, redirectPath, ...rest }: any) => {
+const PrivateComponent = ({ component: Component = null, isAuth, redirectPath, ...rest }: any) => {
     return (
         <Route
             {...rest}

@@ -6,6 +6,8 @@ import { connect } from 'react-redux';
 
 import API from "@/utils/api";
 
+import AuthLayout from '@/layouts/AuthLayout';
+
 import Register from '@/screens/Register';
 import Login from '@/screens/Login';
 import Profile from '@/screens/Profile';
@@ -36,8 +38,14 @@ const Main: React.FC<Props> = ({ user }) => {
 						timeout={10000}
 					>
 						<Switch location={location}>
-							<PrivateComponent path='/login' isAuth={!user} redirectPath="/" component={Login}></PrivateComponent>
-							<PrivateComponent path='/signup' isAuth={!user} redirectPath="/" component={Register}></PrivateComponent>
+							<Route>
+								<AuthLayout>
+									<Switch>
+										<PrivateComponent path='/login' isAuth={!user} redirectPath="/" component={Login}></PrivateComponent>
+										<PrivateComponent path='/signup' isAuth={!user} redirectPath="/" component={Register}></PrivateComponent>
+									</Switch>
+								</AuthLayout>
+							</Route>
 							<PrivateComponent exact isAuth={user} path="/" redirectPath="/login" component={Profile} />
 							<Route path='*'>
 								<h1>404</h1>
