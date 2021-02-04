@@ -148,6 +148,14 @@
 
         }
 
+        &-container {
+            margin-bottom: 30px;
+
+            &:last-of-type {
+                margin-bottom: 0;
+            }
+        }
+
         &-block {
             margin-bottom: 10px;
             position: relative;
@@ -168,15 +176,47 @@
         }
 
         &-icon {
-            position: absolute;
-            right: 15px;
-            top: 15px;
+            width: 25px;
+            height: 25px;
+            transition: .2s;
+            background-repeat: no-repeat;
+            background-size: 20px 20px;
+            background-position: center;
+            cursor: pointer;
+            margin-right: 5px;
 
-            &_add {
-                background-image: url('');
-                background-repeat: no-repeat;
+            &:last-of-type {
+                margin-right: 0;
             }
 
+            &:hover {
+                transform: scale(1.2);
+            }
+
+            &_add {
+                background-image: url('../../images/icons/add-button.svg');
+
+            }
+
+            &_remove {
+                background-image: url('../../images/icons/delete-button.svg');
+            }
+
+            &_disabled {
+                pointer-events: none;
+                opacity: 0.2;
+
+                &:hover {
+                    transform: none;
+                }
+            }
+        }
+
+        &-tools {
+            position: absolute;
+            right: 15px;
+            top: 5px;
+            display: flex;
         }
 
         &-submit {

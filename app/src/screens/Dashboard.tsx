@@ -24,11 +24,69 @@ interface Element {
 
 export const Dashboard: React.FC<Props> = ({ setNewTree, dashboardData }) => {
 
-    const [isActiveForm, setActiveForm] = useState(false);
+    const [isActiveForm, setActiveForm] = useState(true);
 
     const [newSection, editSection] = useState<string>('');
     const [newCategory, editCategory] = useState<string>('');
     const [newElement, editElement] = useState<string>('');
+
+    const [tree, editTree] = useState<Array<object>>([
+        {
+            title: newSection,
+            category: [
+                {
+                    title: newCategory,
+                    element: [
+                        {
+                            title: newElement,
+                        }
+                    ]
+                }
+            ]
+        }
+    ])
+
+    function addElement(type: String) {
+        // editTree(tree.map((item: Object): Object => {
+
+        // }));
+        let newTree: Array<Object> = []
+        if (type === 'section') {
+            newTree = [...tree, {
+                title: '',
+                category: [
+                    {
+                        title: '',
+                        element: [
+                            {
+                                title: '',
+                            },
+                        ]
+                    }
+                ]
+            }]
+        } else if (type === 'category') {
+
+        } else if (type === 'element') {
+
+        }
+        editTree(newTree);
+    }
+
+    function removeElement(type: String) {
+        // editTree(tree.map((item: Object): Object => {
+
+        // }));
+        let newTree: Array<Object> = [...tree]
+        if (type === 'section') {
+            newTree.splice(-1, 1);
+        } else if (type === 'category') {
+
+        } else if (type === 'element') {
+
+        }
+        editTree(newTree);
+    }
 
     function addNewThree(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
@@ -40,9 +98,9 @@ export const Dashboard: React.FC<Props> = ({ setNewTree, dashboardData }) => {
                     element: [
                         {
                             title: newElement,
-                        }
+                        },
                     ]
-                }
+                },
             ]
         });
         editSection('');
@@ -68,7 +126,47 @@ export const Dashboard: React.FC<Props> = ({ setNewTree, dashboardData }) => {
                 })}
             </div>
         )
-    })
+    });
+
+    const createTree = tree.map((section: Section, sectionId: number) => {
+        return (
+            <div className="dashboard__form-container" key={sectionId}>
+                <div className="dashboard__form-block dashboard__form-block_section">
+                    {sectionId === 0 ? (
+                        <div className="dashboard__form-tools">
+                            <span className={`dashboard__form-icon dashboard__form-icon_add ${tree.length >= 3 ? 'dashboard__form-icon_disabled' : ''}`} onClick={(e: SyntheticEvent) => addElement('section')}></span>
+                            <span className={`dashboard__form-icon dashboard__form-icon_remove ${tree.length <= 1 ? 'dashboard__form-icon_disabled' : ''}`} onClick={(e: SyntheticEvent) => removeElement('section')}></span>
+                        </div>
+                    ) : null}
+
+                    <label htmlFor="" className="dashboard__label">
+                        <input type="text" value={newSection} className="dashboard__input" onChange={(e: React.FormEvent<HTMLInputElement>) => editSection(e.currentTarget.value)} placeholder="Введите название раздела" />
+                    </label>
+                </div>
+                {section.category.map((category: Category, categoryId: number) => {
+                    return (
+                        <React.Fragment key={categoryId}>
+                            <div className="dashboard__form-block dashboard__form-block_category">
+                                <label htmlFor="" className="dashboard__label">
+                                    <input type="text" value={newCategory} className="dashboard__input" onChange={(e: React.FormEvent<HTMLInputElement>) => editCategory(e.currentTarget.value)} placeholder="Введите название категории" />
+                                </label>
+                            </div>
+                            {category.element.map((element: Element, elementId: number) => {
+                                return (
+                                    <div className="dashboard__form-block dashboard__form-block_element" key={elementId}>
+                                        <label htmlFor="" className="dashboard__label">
+                                            <input type="text" value={newElement} className="dashboard__input" onChange={(e: React.FormEvent<HTMLInputElement>) => editElement(e.currentTarget.value)} placeholder="Введите название элемента" />
+                                        </label>
+                                    </div>
+                                )
+                            })}
+                        </React.Fragment>
+                    )
+                })}
+
+            </div>
+        )
+    });
 
     return (
         <section className="dashboard">
@@ -88,22 +186,7 @@ export const Dashboard: React.FC<Props> = ({ setNewTree, dashboardData }) => {
                             </div>)}
                         </div>
                         <form onSubmit={(e: React.FormEvent<HTMLFormElement>) => addNewThree(e)} className={`dashboard__form ${isActiveForm ? 'dashboard__form_active' : ''}`}>
-                            <div className="dashboard__form-block dashboard__form-block_section">
-                                <span className="dashboard__form-icon dashboard__form-icon_add">+</span>
-                                <label htmlFor="" className="dashboard__label">
-                                    <input type="text" value={newSection} className="dashboard__input" onChange={(e: React.FormEvent<HTMLInputElement>) => editSection(e.currentTarget.value)} placeholder="Введите название раздела" />
-                                </label>
-                            </div>
-                            <div className="dashboard__form-block dashboard__form-block_category">
-                                <label htmlFor="" className="dashboard__label">
-                                    <input type="text" value={newCategory} className="dashboard__input" onChange={(e: React.FormEvent<HTMLInputElement>) => editCategory(e.currentTarget.value)} placeholder="Введите название категории" />
-                                </label>
-                            </div>
-                            <div className="dashboard__form-block dashboard__form-block_element">
-                                <label htmlFor="" className="dashboard__label">
-                                    <input type="text" value={newElement} className="dashboard__input" onChange={(e: React.FormEvent<HTMLInputElement>) => editElement(e.currentTarget.value)} placeholder="Введите название элемента" />
-                                </label>
-                            </div>
+                            {createTree.length ? createTree : null}
                             <button type="submit" className="dashboard__form-submit">Добавить</button>
                         </form>
                     </div>

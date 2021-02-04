@@ -308,3 +308,5 @@
 [0mPOST /api/auth/signup [33m404[0m 1.575 ms - 120[0m
 [0mOPTIONS /api/auth/login [32m204[0m 1.159 ms - 0[0m
 [0mPOST /api/auth/login [32m200[0m 105.849 ms - 183[0m
+[0mOPTIONS /api/auth/login [32m204[0m 1.154 ms - 0[0m
+[0mPOST /api/auth/login [32m200[0m 108.437 ms - 183[0m

@@ -44,6 +44,10 @@ module.exports = {
 						},
 					},
 					{
+						loader: 'resolve-url-loader',
+						options: {}
+					},
+					{
 						loader: "sass-loader",
 						options: {
 							sourceMap: true,
@@ -58,8 +62,8 @@ module.exports = {
 						loader: "file-loader",
 						options: {
 							esModule: false,
-							outputPath: path.join(__dirname, "src/assets/images/"),
-							publicPath: path.join(__dirname, "src/assets/images/")
+							// outputPath: path.join(__dirname, "src/assets/images/"),
+							// publicPath: path.join(__dirname, "src/assets/images/")
 						},
 					},
 				],
