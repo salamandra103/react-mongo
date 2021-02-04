@@ -1,18 +1,13 @@
 html,
-body {
-    height: 100%;
-    min-height: 100vh;
-}
+body {}
 
-#root {
-    height: 100%;
-}
+#root {}
 
 .page {
-    height: 100%;
+    min-height: 100vh;
     display: flex;
     flex-flow: column;
-
+    position: relative;
     background-color: #4397ff;
 
     &:after {
@@ -49,6 +44,13 @@ body {
         flex: 1;
         overflow: hidden;
     }
+}
+
+.container {
+    max-width: 1200px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 0 15px;
 }
 
 main.page {

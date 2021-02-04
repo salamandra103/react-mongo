@@ -58,6 +58,8 @@ module.exports = {
 						loader: "file-loader",
 						options: {
 							esModule: false,
+							outputPath: path.join(__dirname, "src/assets/images/"),
+							publicPath: path.join(__dirname, "src/assets/images/")
 						},
 					},
 				],

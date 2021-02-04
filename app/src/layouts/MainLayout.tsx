@@ -11,6 +11,7 @@ import AuthLayout from '@/layouts/AuthLayout';
 import Register from '@/screens/Register';
 import Login from '@/screens/Login';
 import Profile from '@/screens/Profile';
+import Dashboard from '@/screens/Dashboard';
 
 import PrivateComponent from '@/components/PrivateComponent';
 
@@ -38,15 +39,9 @@ const Main: React.FC<Props> = ({ user }) => {
 						timeout={10000}
 					>
 						<Switch location={location}>
-							<Route>
-								<AuthLayout>
-									<Switch>
-										<PrivateComponent path='/login' isAuth={!user} redirectPath="/" component={Login}></PrivateComponent>
-										<PrivateComponent path='/signup' isAuth={!user} redirectPath="/" component={Register}></PrivateComponent>
-									</Switch>
-								</AuthLayout>
-							</Route>
-							<PrivateComponent exact isAuth={user} path="/" redirectPath="/login" component={Profile} />
+							<PrivateComponent path='/login' isAuth={!user} redirectPath="/" component={Login}></PrivateComponent>
+							<PrivateComponent path='/signup' isAuth={!user} redirectPath="/" component={Register}></PrivateComponent>
+							<PrivateComponent exact isAuth={user} path="/" redirectPath="/login" component={Dashboard} />
 							<Route path='*'>
 								<h1>404</h1>
 							</Route>
