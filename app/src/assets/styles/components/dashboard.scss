@@ -232,10 +232,19 @@
 
             &:not(:disabled) {
                 cursor: pointer;
+
+                &:hover {
+                    background-color: #409bf4;
+                }
             }
 
-            &:hover {
-                background-color: #409bf4;
+            &:disabled {
+                color: #9a9a9a;
+                background-color: #eaeaea;
+
+                &:hover {
+                    background-color: #eaeaea;
+                }
             }
         }
     }
