@@ -310,3 +310,7 @@
 [0mPOST /api/auth/login [32m200[0m 105.849 ms - 183[0m
 [0mOPTIONS /api/auth/login [32m204[0m 1.154 ms - 0[0m
 [0mPOST /api/auth/login [32m200[0m 108.437 ms - 183[0m
+[0mOPTIONS /api/auth/login [32m204[0m 1.153 ms - 0[0m
+[0mPOST /api/auth/login [32m200[0m 107.353 ms - 183[0m
+[0mOPTIONS /api/auth/login [32m204[0m 1.146 ms - 0[0m
+[0mPOST /api/auth/login [32m200[0m 89.155 ms - 183[0m

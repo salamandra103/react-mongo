@@ -4,6 +4,6 @@ export default axios.create({
 	baseURL: process.env.API_URL,
 	responseType: "json",
 	headers: {
-		'Authorization': localStorage.getItem('token') || ''
-	}
+		Authorization: localStorage.getItem("token") || "",
+	},
 });

@@ -5,6 +5,6 @@ import App from "@/App";
 import "@/assets/styles/style.scss";
 
 ReactDOM.render(
-    React.createElement(App),
-    document.getElementById("root")
+	React.createElement(App),
+	document.getElementById("root"),
 );

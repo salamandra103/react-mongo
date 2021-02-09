@@ -1,39 +1,41 @@
-import React, { MouseEvent, SyntheticEvent } from 'react'
-import { connect } from 'react-redux';
+import React, { MouseEvent, SyntheticEvent } from "react";
+import { connect } from "react-redux";
 
-import { removeUser } from '@/store/actions/user'
-import store from '@/store/'
-interface Props {
-    user: Object,
-    removeUser: Function
-}
+import { removeUser } from "@/store/actions/user";
+import store from "@/store/";
+import { Action } from "../../node_modules/redux/index";
 
-const Header: React.FC<Props> = ({ removeUser, user }) => {
-
-    return (
-        <header className="header">
-            <div className="header__wrapper">
-                {user ? <button type="button" onClick={(e: SyntheticEvent) => removeUser()} className="header__signout">Выйти</button> : null}
-            </div>
-        </header>
-    )
-}
+type Props = StateProps & DispatchProps
 
 interface StateProps {
-    user: Object
+    user: {
+        token: string
+    }
 }
+
+interface DispatchProps {
+    removeUser: () => void
+}
+
+const Header: React.FC<Props> = ({ removeUser, user }: Props) => (
+	<header className="header">
+		<div className="header__wrapper">
+			{user ? <button type="button" onClick={(e: SyntheticEvent) => removeUser()} className="header__signout">Выйти</button> : null}
+		</div>
+	</header>
+);
 
 function mapStateToProps(state: StateProps) {
-    return {
-        user: state.user
-    }
+	return {
+		user: state.user,
+	};
 }
 
-function mapDispatchToProps(dispatch: Function) {
-    return {
-        removeUser() {
-            dispatch(removeUser());
-        }
-    }
+function mapDispatchToProps(dispatch: React.Dispatch<Action>) {
+	return {
+		removeUser() {
+			dispatch(removeUser());
+		},
+	};
 }
 export default connect(mapStateToProps, mapDispatchToProps)(Header);

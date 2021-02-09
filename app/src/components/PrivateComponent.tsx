@@ -1,26 +1,25 @@
-import React, { Component } from 'react'
-import { Route, Redirect } from 'react-router-dom'
+import React, { Component } from "react";
+import { Route, Redirect, RouteProps } from "react-router-dom";
 
-import { connect } from 'react-redux';
+import { connect } from "react-redux";
 
-const PrivateComponent = ({ component: Component = null, isAuth, redirectPath, ...rest }: any) => {
-    return (
-        <Route
-            {...rest}
-            render={(props: any) =>
-                isAuth ? (
-                    <Component {...props} />
-                ) : (
-                        <Redirect
-                            to={{
-                                pathname: redirectPath,
-                                state: { from: props.location }
-                            }}
-                        />
-                    )
-            }
-        />
-    )
+interface Props extends RouteProps {
+	isAuth: boolean,
+	redirectPath: string,
 }
 
-export default PrivateComponent
+const PrivateComponent: React.FC<Props> = ({
+	component: Component = null, isAuth, redirectPath, ...routeProps
+}: Props) => (
+	<Route {...routeProps}
+		render={(props) => (isAuth ? (
+			<Component {...props} />
+		) : (
+			<Redirect to={{
+				pathname: redirectPath,
+				state: { from: props.location },
+			}} />
+		))} />
+);
+
+export default PrivateComponent;
