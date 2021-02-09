@@ -3,34 +3,37 @@ import { connect } from "react-redux";
 
 import { setNewTree } from "@/store/actions/dashboard";
 
+import DashboradList from '@/components/DashboardList';
+
 interface Props {
-    setNewTree: Function,
-    dashboardData: Array<Tree>
+	setNewTree: Function,
+	dashboardData: Array<Tree>
 }
 
 interface Section {
-    title: string,
-    categories: Array<Category>
+	title: string,
+	categories: Array<Category>
 }
+
+interface Category {
+	title: string,
+	elements: Array<Element>
+}
+
 interface Element {
 	title: string
 }
 
-interface Category {
-    title: string,
-    elements: Array<Element>
-}
-
 interface Tree {
-    title: string,
-    categories: Array<Category>
+	title: string,
+	categories: Array<Category>
 }
 
 interface StateProps {
-    dashboard: Array<Tree>,
+	dashboard: Array<Tree>,
 }
 
-export const Dashboard: React.FC<Props> = ({ setNewTree, dashboardData }) => {
+const Dashboard: React.FC<Props> = ({ setNewTree, dashboardData }) => {
 	const [isActiveForm, setActiveForm] = useState(true);
 
 	const [tree, editTree] = useState<Array<Tree>>([
@@ -92,6 +95,7 @@ export const Dashboard: React.FC<Props> = ({ setNewTree, dashboardData }) => {
 							}),
 						};
 					}
+					return item;
 				});
 			} catch (err) {
 				console.error(err);
@@ -111,20 +115,26 @@ export const Dashboard: React.FC<Props> = ({ setNewTree, dashboardData }) => {
 					if (id === sectionId) {
 						return {
 							...item,
-							categories: item.categories.map((itemCategory, idCategory) => ({
-								...itemCategory,
-								elements: itemCategory.elements.map((itemElement, idElement) => {
-									if (idElement === elementId) {
-										return {
-											...itemElement,
-											title: value,
-										};
+							categories: item.categories.map((itemCategory, idCategory) => {
+								if (idCategory === categoryId) {
+									return {
+										...itemCategory,
+										elements: itemCategory.elements.map((itemElement, idElement) => {
+											if (idElement === elementId) {
+												return {
+													...itemElement,
+													title: value,
+												};
+											}
+											return itemElement;
+										}),
 									}
-									return itemElement;
-								}),
-							})),
+								}
+								return itemCategory
+							}),
 						};
 					}
+					return item
 				});
 			} catch (err) {
 				console.error(err);
@@ -180,14 +190,7 @@ export const Dashboard: React.FC<Props> = ({ setNewTree, dashboardData }) => {
 		} else if (type === "category") {
 			newTree[sectionId].categories.splice(-1, 1);
 		} else if (type === "element") {
-			try {
-				if (typeof categoryId === "undefined") {
-					throw new Error("Отсутствует обязательный параметр categoryId");
-				}
-				newTree[sectionId].categories[categoryId].elements.splice(-1, 1);
-			} catch (err) {
-				console.error(err);
-			}
+			newTree[sectionId].categories[categoryId].elements.splice(-1, 1);
 		}
 		editTree(newTree);
 	}
@@ -197,26 +200,12 @@ export const Dashboard: React.FC<Props> = ({ setNewTree, dashboardData }) => {
 		setNewTree(tree);
 	}
 
-	const sections = dashboardData.map((section: Section, sectionId: number) => (
-		<div className="dashboard__section" key={sectionId}>
-			<span className="dashboard__section-name">{section.title}</span>
-			{section.categories.map((category: Category, categoryId: number) => (
-				<div className="dashboard__category" key={categoryId}>
-					<span className="dashboard__category-name">{category.title}</span>
-					{category.elements.map((element: Element, elementId: number) => (
-						<div className="dashboard__element" key={elementId}>{element.title}</div>
-					))}
-				</div>
-			))}
-		</div>
-	));
-
 	const createTree = tree.map((section: Section, sectionId: number) => (
 		<div className="dashboard__form-container" key={sectionId}>
 			<div className="dashboard__form-block dashboard__form-block_section">
 				<div className="dashboard__form-tools">
 					<span className={`dashboard__form-icon dashboard__form-icon_add ${tree.length >= 3 ? "dashboard__form-icon_disabled" : ""}`} onClick={(e: SyntheticEvent) => addElement("section")}></span>
-					<span className={`dashboard__form-icon dashboard__form-icon_remove ${tree.length <= 1 ? "dashboard__form-icon_disabled" : ""}`} onClick={(e: SyntheticEvent) => removeElement("section", sectionId)}></span>
+					<span className={`dashboard__form-icon dashboard__form-icon_remove ${tree.length <= 1 ? "dashboard__form-icon_disabled" : ""}`} onClick={(e: SyntheticEvent) => removeElement("section")}></span>
 				</div>
 
 				<label htmlFor="" className="dashboard__label">
@@ -231,14 +220,14 @@ export const Dashboard: React.FC<Props> = ({ setNewTree, dashboardData }) => {
 							<span className={`dashboard__form-icon dashboard__form-icon_remove ${tree[sectionId].categories.length <= 1 ? "dashboard__form-icon_disabled" : ""}`} onClick={(e: SyntheticEvent) => removeElement("category", sectionId)}></span>
 						</div>
 						<label htmlFor="" className="dashboard__label">
-							<input type="text" value={category.title} className="dashboard__input" onChange={(e: React.FormEvent<HTMLInputElement>) => changeElementValue("category", e.currentTarget.value, sectionId, categoryId)} placeholder="Введите название категории" />
+							<input type="text" value={category.title || ''} className="dashboard__input" onChange={(e: React.FormEvent<HTMLInputElement>) => changeElementValue("category", e.currentTarget.value, sectionId, categoryId)} placeholder="Введите название категории" />
 						</label>
 					</div>
 					{category.elements.map((element: Element, elementId: number) => (
 						<div className="dashboard__form-block dashboard__form-block_element" key={elementId}>
 							<div className="dashboard__form-tools">
 								<span className={`dashboard__form-icon dashboard__form-icon_add ${tree[sectionId].categories[categoryId].elements.length >= 3 ? "dashboard__form-icon_disabled" : ""}`} onClick={(e: SyntheticEvent) => addElement("element", sectionId, categoryId)}></span>
-								<span className={`dashboard__form-icon dashboard__form-icon_remove ${tree[sectionId].categories[categoryId].elements.length <= 1 ? "dashboard__form-icon_disabled" : ""}`} onClick={(e: SyntheticEvent) => removeElement("category", sectionId, categoryId)}></span>
+								<span className={`dashboard__form-icon dashboard__form-icon_remove ${tree[sectionId].categories[categoryId].elements.length <= 1 ? "dashboard__form-icon_disabled" : ""}`} onClick={(e: SyntheticEvent) => removeElement("element", sectionId, categoryId)}></span>
 							</div>
 							<label htmlFor="" className="dashboard__label">
 								<input type="text" value={element.title} className="dashboard__input" onChange={(e: React.FormEvent<HTMLInputElement>) => changeElementValue("element", e.currentTarget.value, sectionId, categoryId, elementId)} placeholder="Введите название элемента" />
@@ -264,11 +253,7 @@ export const Dashboard: React.FC<Props> = ({ setNewTree, dashboardData }) => {
 					</nav>
 					<div className="dashboard__block">
 						<div className={`dashboard__grid ${isActiveForm ? "dashboard__grid_active" : ""}`}>
-							{(sections && sections.length) ? sections : (
-								<div className="dashboard__empty">
-									<h2>Пока что элеметов нет!</h2>
-								</div>
-							)}
+							<DashboradList data={dashboardData} />
 						</div>
 						<form onSubmit={(e: React.FormEvent<HTMLFormElement>) => addNewThree(e)} className={`dashboard__form ${isActiveForm ? "dashboard__form_active" : ""}`}>
 							{createTree.length ? createTree : null}
