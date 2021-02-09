@@ -238,7 +238,7 @@ const DashboardForm: React.FC<Props> = ({ setNewTree, visible } : Props) => {
 					</div>
 				))
 			}
-			<button type="submit" disabled={tree.some((section) => (!section.title.length))} className="dashboard__form-submit">Добавить</button>
+			<button type="submit" className="dashboard__form-submit">Добавить</button>
 		</form>
 			
 	);
