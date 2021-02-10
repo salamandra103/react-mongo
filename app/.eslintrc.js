@@ -52,6 +52,9 @@ module.exports = {
 		"no-trailing-spaces": ["error", { skipBlankLines: true }],
 		"no-use-before-define": ["off"],
 		"no-underscore-dangle": ["off"],
+		"no-debugger": ["off"],
+		"no-restricted-syntax": ["off"],
+		"guard-for-in": ["off"],
 		"import/extensions": [
 			"error",
 			"ignorePackages",

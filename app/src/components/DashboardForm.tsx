@@ -5,7 +5,8 @@ import { setNewTree } from "@/store/actions/dashboard";
 import { Action } from "../../node_modules/redux/index";
 
 type Props = {
-    visible: boolean
+    visible: boolean,
+	data: Array<Tree>,
 } & DispatchProps
 
 interface Section {
@@ -31,7 +32,7 @@ interface DispatchProps {
 	setNewTree: (newTree: Array<Tree>) => void
 }
 
-const DashboardForm: React.FC<Props> = ({ setNewTree, visible } : Props) => {
+const DashboardForm: React.FC<Props> = ({ setNewTree, visible, data } : Props) => {
 	const [tree, editTree] = useState<Array<Tree>>([
 		{
 			title: "",
@@ -50,7 +51,6 @@ const DashboardForm: React.FC<Props> = ({ setNewTree, visible } : Props) => {
 
 	function changeElementValue(type: string, value: string, sectionId?: number, categoryId?: number, elementId?: number): void {
 		let newTree: Array<Tree> = [...tree];
-
 		if (type === "section") {
 			try {
 				if (typeof sectionId === "undefined") {
@@ -136,7 +136,7 @@ const DashboardForm: React.FC<Props> = ({ setNewTree, visible } : Props) => {
 				console.error(err);
 			}
 		}
-		editTree(newTree);
+		editTree([...newTree]);
 	}
 
 	function addElement(type: string, sectionId?: number, categoryId?: number) {
@@ -238,7 +238,7 @@ const DashboardForm: React.FC<Props> = ({ setNewTree, visible } : Props) => {
 					</div>
 				))
 			}
-			<button type="submit" className="dashboard__form-submit">Добавить</button>
+			<button type="submit" disabled={!tree.every((item) => !!item.title.length) || data.length > 2} className="dashboard__form-submit">Добавить</button>
 		</form>
 			
 	);

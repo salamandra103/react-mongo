@@ -45,7 +45,7 @@ const Dashboard: React.FC<Props> = ({ dashboard }: Props) => {
 						</ul>
 					</nav>
 					<div className="dashboard__block">
-						<DashboardForm visible={isActiveForm} />
+						<DashboardForm visible={isActiveForm} data={dashboard} />
 						<div className={`dashboard__grid ${isActiveForm ? "dashboard__grid_active" : ""}`}>
 							<DashboardList data={dashboard} />
 						</div>
