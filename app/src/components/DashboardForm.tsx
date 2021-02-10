@@ -1,8 +1,9 @@
 import React, { useState, SyntheticEvent } from "react";
 import { connect } from "react-redux";
 
-import { setNewTree } from "@/store/actions/dashboard";
+import { setTreeAsync } from "@/store/actions/dashboard";
 import { Action } from "../../node_modules/redux/index";
+import { ThunkAction } from "../../node_modules/redux-thunk/index";
 
 type Props = {
     visible: boolean,
@@ -29,10 +30,10 @@ interface Tree {
 }
 
 interface DispatchProps {
-	setNewTree: (newTree: Array<Tree>) => void
+	setTreeAsync: (tree: Array<Tree>) => void
 }
 
-const DashboardForm: React.FC<Props> = ({ setNewTree, visible, data } : Props) => {
+const DashboardForm: React.FC<Props> = ({ setTreeAsync, visible, data } : Props) => {
 	const [tree, editTree] = useState<Array<Tree>>([
 		{
 			title: "",
@@ -193,7 +194,7 @@ const DashboardForm: React.FC<Props> = ({ setNewTree, visible, data } : Props) =
 
 	function addNewThree(e: React.FormEvent<HTMLFormElement>) {
 		e.preventDefault();
-		setNewTree(tree);
+		setTreeAsync(tree);
 	}
 
 	return (
@@ -244,9 +245,9 @@ const DashboardForm: React.FC<Props> = ({ setNewTree, visible, data } : Props) =
 	);
 };
 
-const mapDispatchToProps = (dispatch: React.Dispatch<Action>) => ({
-	setNewTree(newTreeElement: Array<Tree>) {
-		dispatch(setNewTree(newTreeElement));
+const mapDispatchToProps = (dispatch: React.Dispatch<Action | Function>) => ({
+	setTreeAsync: (tree: Array<Tree>) => {
+		dispatch(setTreeAsync(tree));
 	},
 });
 

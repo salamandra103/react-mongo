@@ -12,6 +12,7 @@ const app = express();
 const jsonParser = bodyParser.json();
 
 const authRouter = require("./routes/auth");
+const dashboardRouter = require("./routes/dashboard");
 
 const logStream = fs.createWriteStream("./access.log", { flags: "a" });
 app.use(express.static("public"));
@@ -24,6 +25,7 @@ app.use(cors());
 
 // Routers use
 app.use("/api/auth/", authRouter);
+app.use("/api/dashboard/", dashboardRouter);
 
 // Catch 404
 app.use((req, res, next) => {
