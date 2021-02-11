@@ -1,11 +1,16 @@
-import React, { Dispatch, SyntheticEvent, useState } from "react";
+import React, {
+	Dispatch, SyntheticEvent, useState, useEffect,
+} from "react";
 import { connect } from "react-redux";
+
+import { getTreeAsync } from "@/store/actions/dashboard";
 
 import DashboardList from "@/components/DashboardList";
 import DashboardForm from "@/components/DashboardForm";
+
 import { Action } from "../../node_modules/redux/index";
 
-type Props = StateProps
+type Props = StateProps & DispatchProps
 
 interface Section {
 	title: string,
@@ -30,8 +35,18 @@ interface StateProps {
 	dashboard: Array<Tree>,
 }
 
-const Dashboard: React.FC<Props> = ({ dashboard }: Props) => {
+interface DispatchProps {
+	getTreeAsync: () => void
+}
+
+const Dashboard: React.FC<Props> = ({ dashboard, getTreeAsync }: Props) => {
 	const [isActiveForm, setActiveForm] = useState(true);
+
+	useEffect(() => {
+		getTreeAsync()
+		return () => {
+		}
+	}, [])
 
 	return (
 		<section className="dashboard">
@@ -60,4 +75,10 @@ const mapStateToProps = (state: StateProps) => ({
 	dashboard: state.dashboard,
 });
 
-export default connect<StateProps>(mapStateToProps)(Dashboard);
+const mapDispatchToProps = (dispatch: React.Dispatch<Action | Function>) => ({
+	getTreeAsync: () => {
+		dispatch(getTreeAsync());
+	},
+});
+
+export default connect<StateProps, DispatchProps>(mapStateToProps, mapDispatchToProps)(Dashboard);

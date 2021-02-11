@@ -4,7 +4,7 @@ const initialState = [];
 
 const dashboard = (state = initialState, action) => {
 	switch (action.type) {
-	case "SET_NEW_TREE": {
+	case "SET_TREE_SUCCESS": {
 		// ПЕРЕДЕЛАТЬ МЕТОД
 		// const _arr = [...action.payload];
 		// _arr.forEach((section, sectionIndex) => {
@@ -52,6 +52,15 @@ const dashboard = (state = initialState, action) => {
 		// }([...action.payload]));
 		
 		return [...state, ...action.payload];
+	}
+	case "GET_TREE_SUCCESS": {
+		return action.payload;
+	}
+	case "DELETE_TREE_SUCCESS": {
+		console.log(action);
+		const _arr = [...state];
+		_arr.splice(_arr.findIndex((item) => item._id === action.id), 1);
+		return _arr;
 	}
 	case "EDIT_EXISTING_TREE":
 		return state;

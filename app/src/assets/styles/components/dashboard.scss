@@ -129,6 +129,38 @@
         }
     }
 
+    &__item {
+        position: relative;
+
+        &-delete {
+            position: absolute;
+            right: 15px;
+            top: 5px;
+            width: 25px;
+            height: 25px;
+            transition: .2s;
+            background-repeat: no-repeat;
+            background-size: 20px 20px;
+            background-position: center;
+            cursor: pointer;
+            margin-right: 5px;
+            background-image: url('../../images/icons/delete-button.svg');
+
+            &:hover {
+                transform: scale(1.2);
+            }
+
+            &_disabled {
+                pointer-events: none;
+                opacity: 0.2;
+
+                &:hover {
+                    transform: none;
+                }
+            }
+        }
+    }
+
     &__form {
         display: flex;
         flex-direction: column;
