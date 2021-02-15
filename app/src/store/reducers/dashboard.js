@@ -57,7 +57,6 @@ const dashboard = (state = initialState, action) => {
 		return action.payload;
 	}
 	case "DELETE_TREE_SUCCESS": {
-		console.log(action);
 		const _arr = [...state];
 		_arr.splice(_arr.findIndex((item) => item._id === action.id), 1);
 		return _arr;

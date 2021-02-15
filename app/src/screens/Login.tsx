@@ -33,7 +33,6 @@ const Login: React.FC<Props> = ({ user, setUser }: Props) => {
 			email,
 			password,
 		}).then((res: AxiosResponse) => {
-			localStorage.setItem("user_info", JSON.stringify({ ...res.data }));
 			setUser(res.data);
 		}).catch((err: Error) => {
 			setLoader(false);

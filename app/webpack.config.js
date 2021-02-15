@@ -1,5 +1,5 @@
 const path = require("path");
-const Dotenv = require('dotenv-webpack');
+const Dotenv = require("dotenv-webpack");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 module.exports = {
@@ -9,8 +9,9 @@ module.exports = {
 		publicPath: "/",
 		filename: "main.js",
 	},
+	devtool: "inline-source-map",
 	resolve: {
-		extensions: ['.tsx', '.ts', '.js', '.jsx'],
+		extensions: [".tsx", ".ts", ".js", ".jsx"],
 		alias: {
 			"@": path.resolve(__dirname, "./src"),
 		},
@@ -19,7 +20,7 @@ module.exports = {
 		rules: [
 			{
 				test: /\.tsx?$/,
-				use: 'ts-loader',
+				use: "ts-loader",
 				exclude: /node_modules/,
 			},
 			{
@@ -44,8 +45,8 @@ module.exports = {
 						},
 					},
 					{
-						loader: 'resolve-url-loader',
-						options: {}
+						loader: "resolve-url-loader",
+						options: {},
 					},
 					{
 						loader: "sass-loader",
@@ -74,7 +75,7 @@ module.exports = {
 		new HtmlWebpackPlugin({
 			template: "./dist/index.html",
 		}),
-		new Dotenv()
+		new Dotenv(),
 	],
 	devServer: {
 		contentBase: path.join(__dirname, "dist"),

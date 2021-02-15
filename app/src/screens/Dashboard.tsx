@@ -43,10 +43,8 @@ const Dashboard: React.FC<Props> = ({ dashboard, getTreeAsync }: Props) => {
 	const [isActiveForm, setActiveForm] = useState(true);
 
 	useEffect(() => {
-		getTreeAsync()
-		return () => {
-		}
-	}, [])
+		getTreeAsync();
+	}, []);
 
 	return (
 		<section className="dashboard">

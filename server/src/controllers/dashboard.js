@@ -3,9 +3,6 @@ const createError = require("http-errors");
 const Dashboard = require("../models/dashboard");
 
 exports.dashboardGet = async(req, res, next) => {
-	// const {tree} = req.body;
-	// next()
-	// Dashboard.create({})
 	Dashboard.find({}, (err, data) => {
 		if (err) {
 			res.status(404).send(err);
