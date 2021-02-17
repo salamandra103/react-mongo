@@ -7,8 +7,7 @@ const requireAuth = (req, res, next) => {
 	if (accessToken) {
 		jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET, (err, decoded) => {
 			if (err) {
-				next(createError(err.message));
-				// res.status(404).send(err.message);
+				res.status(500).send(err);
 			} else {
 				next();
 			}

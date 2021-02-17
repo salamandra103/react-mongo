@@ -6,23 +6,15 @@ import MainLayout from "@/layouts/MainLayout";
 
 import store from "./store";
 
-interface Props {
-	user?: Object
-}
+type Props = {};
 
-let App: React.FC<Props> = ({ user }) => (
+let App: React.FC<Props> = () => (
 	<BrowserRouter basename="/">
 		<MainLayout />
 	</BrowserRouter>
 );
 
-interface State {
-	user: Object
-}
-
-App = connect((state: State) => ({
-	user: state.user,
-}))(App);
+App = connect(null, null)(App);
 
 const AppWithStore: React.FC = () => (
 	<Provider store={store}>
