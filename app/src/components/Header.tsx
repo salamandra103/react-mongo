@@ -9,7 +9,7 @@ type Props = StateProps & DispatchProps
 
 interface StateProps {
     user: {
-        token: string
+        accessToken: string
     }
 }
 

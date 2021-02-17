@@ -24,7 +24,7 @@ type Props = StateProps;
 
 interface StateProps {
 	user: {
-		token: string
+		accessToken: string
 	}
 }
 

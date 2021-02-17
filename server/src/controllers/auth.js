@@ -27,9 +27,12 @@ const handleErrors = (err) => {
 	return errors;
 };
 
-const maxAge = 3 * 24 * 60 * 60;
-const createToket = (id) => jwt.sign({ id }, process.env.TOKEN_SECRET, {
-	expiresIn: maxAge,
+const createAccessToken = (id) => jwt.sign({ id }, process.env.ACCESS_TOKEN_SECRET, {
+	expiresIn: process.env.ACCESS_TOKEN_LIFE,
+});
+
+const createRefreshToken = (id) => jwt.sign({ id }, process.env.REFRESH_TOKEN_SECRET, {
+	expiresIn: process.env.REFRESH_TOKEN_LIFE,
 });
 
 exports.signUpPost = (req, res, next) => {
@@ -48,11 +51,12 @@ exports.loginPost = async(req, res, next) => {
 	const { email, password } = req.body;
 	try {
 		const user = await User.login(email, password);
-		const token = createToket(user._id);
-		if (!token) {
-			res.status(500).send(handleErrors(new Error("Неправильный токе")));
+		const accessToken = createAccessToken(user._id);
+		const refreshToken = createRefreshToken(user._id);
+		if (!accessToken) {
+			res.status(500).send(handleErrors(new Error("Неправильный токен")));
 		}
-		res.json({ token });
+		res.json({ accessToken, refreshToken });
 	} catch (err) {
 		res.status(404).send(handleErrors(err));
 	}

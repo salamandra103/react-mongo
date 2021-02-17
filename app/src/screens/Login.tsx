@@ -11,12 +11,12 @@ type Props = StateProps & DispatchProps
 
 interface StateProps {
     user: {
-		token: string
+		accessToken: string
 	}
 }
 
 interface DispatchProps {
-	setUser: (data: {token: string}) => void
+	setUser: (data: {accessToken: string}) => void
 }
 
 const Login: React.FC<Props> = ({ user, setUser }: Props) => {
@@ -29,7 +29,7 @@ const Login: React.FC<Props> = ({ user, setUser }: Props) => {
 	function login(e: SyntheticEvent) {
 		e.preventDefault();
 		setLoader(true);
-		API.post<{token: string}>("auth/login", {
+		API.post<{accessToken: string}>("auth/login", {
 			email,
 			password,
 		}).then((res: AxiosResponse) => {
@@ -77,7 +77,7 @@ function mapStateToProps(state: StateProps) {
 
 function mapDispatchToProps(dispatch: React.Dispatch<Action>) {
 	return {
-		setUser(user: {token: string}) {
+		setUser(user: {accessToken: string}) {
 			dispatch(setUser(user));
 		},
 	};

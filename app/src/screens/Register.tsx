@@ -12,7 +12,7 @@ const Register: React.FC = () => {
 
 	function login(e: SyntheticEvent) {
 		e.preventDefault();
-		API.post<{token: string}>("auth/signup", {
+		API.post<{accessToken: string}>("auth/signup", {
 			email,
 			password,
 		}).then((res: AxiosResponse) => {
