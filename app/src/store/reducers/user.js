@@ -2,7 +2,7 @@ const initialState = JSON.parse(localStorage.getItem("user_info")) || null;
 
 const user = (state = initialState, action) => {
 	switch (action.type) {
-	case "SET_USER":
+	case "SET_USER_SUCCESS":
 		localStorage.setItem("user_info", JSON.stringify({ ...action.payload }));
 		return { ...action.payload };
 	case "REMOVE_USER":

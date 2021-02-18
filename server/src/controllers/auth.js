@@ -56,7 +56,6 @@ exports.loginPost = async(req, res, next) => {
 		const accessToken = createAccessToken(user._id);
 		const refreshToken = createRefreshToken(user._id);
 		User.findOneAndUpdate({ _id: user._id }, { refreshToken }, { new: true }, (err, data) => {
-			console.log(data.refreshToken);
 		});
 		
 		res.json({ accessToken, id: user._id });

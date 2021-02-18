@@ -72,8 +72,3 @@ export const deleteTreeAsync = (id) => (dispatch) => {
 			dispatch(deleteTreeError(err));
 		});
 };
-
-export const editExistingTree = (payload) => ({
-	type: "EDIT_EXISTING_TREE",
-	payload,
-});
