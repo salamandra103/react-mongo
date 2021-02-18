@@ -6,18 +6,21 @@ import { AxiosResponse } from "../../node_modules/axios/index";
 const Register: React.FC = () => {
 	const [email, setEmail] = useState<string>("");
 	const [password, setPassword] = useState<string>("");
-	const [isRegistered, setIsRegistered] = useState<boolean>(false);
+	const [loader, setLoader] = useState<boolean>(false);
 
 	const history = useHistory();
 
-	function login(e: SyntheticEvent) {
+	function register(e: SyntheticEvent) {
 		e.preventDefault();
+		setLoader(true);
+
 		API.post<{accessToken: string}>("auth/signup", {
 			email,
 			password,
 		}).then((res: AxiosResponse) => {
 			history.replace("/login");
 		}).catch((err: Error) => {
+			setLoader(false);
 			console.log(err);
 		});
 	}
@@ -26,7 +29,7 @@ const Register: React.FC = () => {
 		<section className="register">
 			<div className="register__wrapper">
 				<p>Регистрация</p>
-				<form action="" onSubmit={login} className="register__form">
+				<form action="" onSubmit={register} className="register__form">
 					<label htmlFor="" className="register__label">
 						<input type="text" placeholder="Введите почту" onChange={(e) => {
 							setEmail(e.target.value);
@@ -40,7 +43,10 @@ const Register: React.FC = () => {
 						<span></span>
 					</label>
 
-					<button type="submit" disabled={isRegistered} className="register__button register__button_register">Зарегистрироваться</button>
+					<button type="submit" disabled={loader} className="register__button register__button_register">
+						<span>Зарегистрироваться</span>
+						{loader ? <img className="loader loader_small" src={require("@/assets/images/icons/loader.svg")} alt="" /> : null}
+					</button>
 					<NavLink to="/login" className="register__link">Авторизация</NavLink>
 				</form>
 			</div>

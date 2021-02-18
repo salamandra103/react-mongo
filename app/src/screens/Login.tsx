@@ -7,33 +7,29 @@ import { setUser } from "@/store/actions/user";
 import { AxiosResponse } from "../../node_modules/axios/index";
 import { Action } from "../../node_modules/redux/index";
 
-type Props = StateProps & DispatchProps
-
-interface StateProps {
-    user: {
-		accessToken: string
-	}
-}
+type Props = DispatchProps
 
 interface DispatchProps {
 	setUser: (data: {accessToken: string}) => void
 }
 
-const Login: React.FC<Props> = ({ user, setUser }: Props) => {
-	const history = useHistory();
-
+const Login: React.FC<Props> = ({ setUser }: Props) => {
 	const [email, setEmail] = useState<string>("");
 	const [password, setPassword] = useState<string>("");
 	const [loader, setLoader] = useState<boolean>(false);
+	
+	const history = useHistory();
 
 	function login(e: SyntheticEvent) {
 		e.preventDefault();
 		setLoader(true);
+		
 		API.post<{accessToken: string}>("auth/login", {
 			email,
 			password,
 		}).then((res: AxiosResponse) => {
 			setUser(res.data);
+			setLoader(false);
 		}).catch((err: Error) => {
 			setLoader(false);
 			console.log(err);
@@ -69,12 +65,6 @@ const Login: React.FC<Props> = ({ user, setUser }: Props) => {
 	);
 };
 
-function mapStateToProps(state: StateProps) {
-	return {
-		user: state.user,
-	};
-}
-
 function mapDispatchToProps(dispatch: React.Dispatch<Action>) {
 	return {
 		setUser(user: {accessToken: string}) {
@@ -83,4 +73,4 @@ function mapDispatchToProps(dispatch: React.Dispatch<Action>) {
 	};
 }
 
-export default connect<StateProps, DispatchProps>(mapStateToProps, mapDispatchToProps)(Login);
+export default connect<DispatchProps>(null, mapDispatchToProps)(Login);

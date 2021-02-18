@@ -1,4 +1,6 @@
 import axios from "axios";
+import store from "@/store";
+import { removeUser } from "@/store/actions/user";
 
 const _axios = axios.create({
 	baseURL: process.env.API_URL,
@@ -18,6 +20,11 @@ _axios.interceptors.request.use((config) => {
 	return Promise.reject(error);
 });
 
-_axios.interceptors.response.use((response) => response, (error) => Promise.reject(error));
+_axios.interceptors.response.use((response) => response, (error) => {
+	if (error.response.data.message === "jwt expired") {
+		store.dispatch(removeUser());
+	}
+	return Promise.reject(error);
+});
 
 export default _axios;
