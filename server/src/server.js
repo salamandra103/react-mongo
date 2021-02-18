@@ -16,6 +16,7 @@ mongoose.set("useCreateIndex", true);
 mongoose.connect("mongodb://localhost:27017/reactdb", {
 	useNewUrlParser: true,
 	useUnifiedTopology: true,
+	useFindAndModify: false,
 	connectTimeoutMS: 1000,
 	socketTimeoutMS: 1000,
 }, (err) => {

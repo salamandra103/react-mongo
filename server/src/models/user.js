@@ -18,6 +18,9 @@ const userSchema = new Schema({
 		required: [true, "Пожалуйста введите пароль"],
 		minlength: [4, "Минимальная длинна пароля 4 символа"],
 	},
+	refreshToken: {
+		type: String,
+	},
 });
 
 userSchema.pre("save", async function(next) {

@@ -35,6 +35,7 @@ const createRefreshToken = (id) => jwt.sign({ id }, process.env.REFRESH_TOKEN_SE
 	expiresIn: process.env.REFRESH_TOKEN_LIFE,
 });
 
+// Регистрация
 exports.signUpPost = (req, res, next) => {
 	const { email, password } = req.body;
 
@@ -47,17 +48,40 @@ exports.signUpPost = (req, res, next) => {
 	});
 };
 
+// Авторизация
 exports.loginPost = async(req, res, next) => {
 	const { email, password } = req.body;
 	try {
 		const user = await User.login(email, password);
 		const accessToken = createAccessToken(user._id);
 		const refreshToken = createRefreshToken(user._id);
-		if (!accessToken) {
-			res.status(500).send(handleErrors(new Error("Неправильный токен")));
-		}
-		res.json({ accessToken, refreshToken });
+		User.findOneAndUpdate({ _id: user._id }, { refreshToken }, { new: true }, (err, data) => {
+			console.log(data.refreshToken);
+		});
+		
+		res.json({ accessToken, id: user._id });
 	} catch (err) {
 		res.status(404).send(handleErrors(err));
+	}
+};
+
+// Обновления токена по рефреш токену
+exports.refreshTokenPost = async(req, res, next) => {
+	const { id } = req.body;
+	try {
+		const user = await User.findById({ _id: id }, (err, data) => {
+			jwt.verify(data.refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, decoded) => {
+				if (err) {
+					res.status(500).send({ ...err, message: "Refresh token expired" });
+				} else {
+					const accessToken = createAccessToken(data._id);
+					const refreshToken = createRefreshToken(data._id);
+					User.findOneAndUpdate({ _id: data._id }, { refreshToken });
+					res.json({ accessToken, id: data._id });
+				}
+			});
+		});
+	} catch (err) {
+		res.status(500).send(err);
 	}
 };

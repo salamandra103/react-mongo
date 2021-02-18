@@ -1,20 +1,20 @@
 const jwt = require("jsonwebtoken");
 const createError = require("http-errors");
 
-const requireAuth = (req, res, next) => {
-	const accessToken = req.header("Authorization") || req.get("token") || req.body.token || req.query.token;
+const verifyAccessToken = (req, res, next) => {
+	const accessToken = req.header("Authorization");
     
 	if (accessToken) {
 		jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET, (err, decoded) => {
 			if (err) {
-				res.status(500).send(err);
+				res.status(500).send({ ...err, message: "Access token expired" });
 			} else {
 				next();
 			}
 		});
 	} else {
-		next(createError("token not have"));
+		next(createError("token not haven't"));
 	}
 };
 
-module.exports = { requireAuth };
+module.exports = { verifyAccessToken };

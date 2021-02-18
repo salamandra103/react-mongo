@@ -21,7 +21,14 @@ _axios.interceptors.request.use((config) => {
 });
 
 _axios.interceptors.response.use((response) => response, (error) => {
-	if (error.response.data.message === "jwt expired") {
+	if (error.response.data.message === "Access token expired") {
+		_axios.post("auth/token", {
+			id: localStorage.getItem("user_info") ? JSON.parse(localStorage.getItem("user_info")).id : "",
+		}).then((res) => {
+			localStorage.setItem("user_info", JSON.stringify(res.data));
+		});
+	}
+	if (error.response.data.message === "Refresh token expired") {
 		store.dispatch(removeUser());
 	}
 	return Promise.reject(error);

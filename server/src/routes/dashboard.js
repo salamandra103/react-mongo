@@ -2,12 +2,12 @@ const express = require("express");
 
 const router = express.Router();
 
-const { requireAuth } = require("../middleware/auth");
+const { verifyAccessToken } = require("../middleware/auth");
 const dashboardController = require("../controllers/dashboard");
 
-router.get("/", requireAuth, dashboardController.dashboardGet);
-router.post("/", requireAuth, dashboardController.dashboardPost);
-router.put("/", requireAuth, dashboardController.dashboardPut);
-router.delete("/", requireAuth, dashboardController.dashboardDelete);
+router.get("/", verifyAccessToken, dashboardController.dashboardGet);
+router.post("/", verifyAccessToken, dashboardController.dashboardPost);
+router.put("/", verifyAccessToken, dashboardController.dashboardPut);
+router.delete("/", verifyAccessToken, dashboardController.dashboardDelete);
 
 module.exports = router;

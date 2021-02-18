@@ -14,8 +14,8 @@ interface DispatchProps {
 }
 
 const Login: React.FC<Props> = ({ setUser }: Props) => {
-	const [email, setEmail] = useState<string>("");
-	const [password, setPassword] = useState<string>("");
+	const [email, setEmail] = useState<string>("test@test.ru");
+	const [password, setPassword] = useState<string>("1234");
 	const [loader, setLoader] = useState<boolean>(false);
 	
 	const history = useHistory();
@@ -42,13 +42,13 @@ const Login: React.FC<Props> = ({ setUser }: Props) => {
 				<p>Авторизация</p>
 				<form action="" onSubmit={login} className="register__form">
 					<label htmlFor="" className="register__label">
-						<input type="text" placeholder="Введите почту" onChange={(e) => {
+						<input type="text" placeholder="Введите почту" value={email} onChange={(e) => {
 							setEmail(e.target.value);
 						}} className="register__input" />
 						<span></span>
 					</label>
 					<label htmlFor="" className="register__label">
-						<input type="password" placeholder="Введите пароль" onChange={(e) => {
+						<input type="password" placeholder="Введите пароль" value={password} onChange={(e) => {
 							setPassword(e.target.value);
 						}} className="register__input" />
 						<span></span>

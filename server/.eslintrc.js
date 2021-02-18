@@ -7,6 +7,7 @@ module.exports = {
 		"airbnb-base",
 	],
 	rules: {
+		"max-len": ['error', {'code': 250}],
 		"linebreak-style": ["off"],
 		indent: ["error", "tab"],
 		"space-before-function-paren": ["error", "never"],
