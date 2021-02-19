@@ -1,7 +1,7 @@
 import React, { useState, SyntheticEvent } from "react";
 import { connect } from "react-redux";
 
-import { setTreeAsync } from "@/store/actions/dashboard";
+import { setTreeAsync, setTreeSuccess } from "@/store/actions/dashboard";
 import { Action } from "../../node_modules/redux/index";
 import { ThunkAction } from "../../node_modules/redux-thunk/index";
 
@@ -31,12 +31,15 @@ interface Tree {
 
 interface DispatchProps {
 	setTreeAsync: (tree: Array<Tree>) => void
+	setTreeSuccess: (tree: Array<Tree>) => void
 }
 
-const DashboardForm: React.FC<Props> = ({ setTreeAsync, visible, data } : Props) => {
+const DashboardForm: React.FC<Props> = ({
+	setTreeAsync, setTreeSuccess, visible, data,
+} : Props) => {
 	const [tree, editTree] = useState<Array<Tree>>([
 		{
-			title: "",
+			title: "123",
 			categories: [
 				{
 					title: "",
@@ -137,7 +140,7 @@ const DashboardForm: React.FC<Props> = ({ setTreeAsync, visible, data } : Props)
 				console.error(err);
 			}
 		}
-		editTree([...newTree]);
+		editTree(newTree);
 	}
 
 	function addElement(type: string, sectionId?: number, categoryId?: number) {
@@ -194,7 +197,25 @@ const DashboardForm: React.FC<Props> = ({ setTreeAsync, visible, data } : Props)
 
 	function addNewThree(e: React.FormEvent<HTMLFormElement>) {
 		e.preventDefault();
-		setTreeAsync(tree);
+		const arr2 = [...tree];
+
+		const _arr = (function recursive(items: Array<Tree>) {
+			items.forEach((item: any, index) => {
+				if (!item.title.length) {
+					items.splice(index, 1);
+				}
+				for (const key in item) {
+					if (Array.isArray(item[key])) {
+						recursive(item[key]);
+					}
+				}
+			});
+			console.log(items);
+			
+			return items;
+		}([...arr2]));
+		setTreeSuccess(tree);
+		// setTreeAsync(tree);
 	}
 
 	return (
@@ -248,6 +269,9 @@ const DashboardForm: React.FC<Props> = ({ setTreeAsync, visible, data } : Props)
 const mapDispatchToProps = (dispatch: React.Dispatch<Action | Function>) => ({
 	setTreeAsync: (tree: Array<Tree>) => {
 		dispatch(setTreeAsync(tree));
+	},
+	setTreeSuccess: (tree: Array<Tree>) => {
+		dispatch(setTreeSuccess(tree));
 	},
 });
 
