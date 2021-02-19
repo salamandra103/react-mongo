@@ -31,15 +31,14 @@ interface Tree {
 
 interface DispatchProps {
 	setTreeAsync: (tree: Array<Tree>) => void
-	setTreeSuccess: (tree: Array<Tree>) => void
 }
 
 const DashboardForm: React.FC<Props> = ({
-	setTreeAsync, setTreeSuccess, visible, data,
+	setTreeAsync, visible, data,
 } : Props) => {
 	const [tree, editTree] = useState<Array<Tree>>([
 		{
-			title: "123",
+			title: "",
 			categories: [
 				{
 					title: "",
@@ -197,25 +196,25 @@ const DashboardForm: React.FC<Props> = ({
 
 	function addNewThree(e: React.FormEvent<HTMLFormElement>) {
 		e.preventDefault();
-		const arr2 = [...tree];
-
-		const _arr = (function recursive(items: Array<Tree>) {
-			items.forEach((item: any, index) => {
-				if (!item.title.length) {
-					items.splice(index, 1);
-				}
-				for (const key in item) {
-					if (Array.isArray(item[key])) {
-						recursive(item[key]);
+		const _arr: Array<Tree> = JSON.parse(JSON.stringify(tree));
+		_arr.forEach((section, sectionIndex) => {
+			if (!section.title.length) {
+				_arr.splice(sectionIndex, 1);
+			} else if (section.categories.length) {
+				section.categories.forEach((category, categoryIndex) => {
+					if (!category.title.length) {
+						_arr[sectionIndex].categories.splice(categoryIndex, 1);
+					} else if (category.elements.length) {
+						category.elements.forEach((element, elementIndex) => {
+							if (!element.title.length) {
+								_arr[sectionIndex].categories[categoryIndex].elements.splice(elementIndex, 1);
+							}
+						});
 					}
-				}
-			});
-			console.log(items);
-			
-			return items;
-		}([...arr2]));
-		setTreeSuccess(tree);
-		// setTreeAsync(tree);
+				});
+			}
+		});
+		setTreeAsync(_arr);
 	}
 
 	return (
@@ -269,9 +268,6 @@ const DashboardForm: React.FC<Props> = ({
 const mapDispatchToProps = (dispatch: React.Dispatch<Action | Function>) => ({
 	setTreeAsync: (tree: Array<Tree>) => {
 		dispatch(setTreeAsync(tree));
-	},
-	setTreeSuccess: (tree: Array<Tree>) => {
-		dispatch(setTreeSuccess(tree));
 	},
 });
 
