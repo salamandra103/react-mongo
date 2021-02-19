@@ -1,39 +1,31 @@
-import React, { SyntheticEvent, useState } from "react";
+import React, { Dispatch, SyntheticEvent, useState } from "react";
 import { useHistory, NavLink } from "react-router-dom";
 import API from "@/utils/api";
 import { connect, DefaultRootState, RootStateOrAny } from "react-redux";
 
-import { setUser } from "@/store/actions/user";
+import { setUserAsync } from "@/store/actions/user";
 import { AxiosResponse } from "../../node_modules/axios/index";
 import { Action } from "../../node_modules/redux/index";
+import { ThunkAction } from "../../node_modules/redux-thunk/index";
 
 type Props = DispatchProps
 
 interface DispatchProps {
-	setUser: (data: {accessToken: string}) => void
+	setUserAsync: (email: string, password: string) => void
 }
 
-const Login: React.FC<Props> = ({ setUser }: Props) => {
+const Login: React.FC<Props> = ({ setUserAsync }: Props) => {
 	const [email, setEmail] = useState<string>("test@test.ru");
 	const [password, setPassword] = useState<string>("1234");
 	const [loader, setLoader] = useState<boolean>(false);
 	
 	const history = useHistory();
 
-	function login(e: SyntheticEvent) {
+	async function login(e: SyntheticEvent) {
 		e.preventDefault();
 		setLoader(true);
-		
-		API.post<{accessToken: string}>("auth/login", {
-			email,
-			password,
-		}).then((res: AxiosResponse) => {
-			setUser(res.data);
-			setLoader(false);
-		}).catch((err: Error) => {
-			setLoader(false);
-			console.log(err);
-		});
+		await setUserAsync(email, password);
+		setLoader(false);
 	}
 
 	return (
@@ -65,12 +57,10 @@ const Login: React.FC<Props> = ({ setUser }: Props) => {
 	);
 };
 
-function mapDispatchToProps(dispatch: React.Dispatch<Action>) {
-	return {
-		setUser(user: {accessToken: string}) {
-			dispatch(setUser(user));
-		},
-	};
-}
+const mapDispatchToProps = (dispatch: React.Dispatch<Action | Function>) => ({
+	setUserAsync: async(email: string, password: string) => {
+		await dispatch(setUserAsync({ email, password }));
+	},
+});
 
 export default connect<DispatchProps>(null, mapDispatchToProps)(Login);
