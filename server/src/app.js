@@ -14,9 +14,9 @@ const jsonParser = bodyParser.json();
 const authRouter = require("./routes/auth");
 const dashboardRouter = require("./routes/dashboard");
 
-const logStream = fs.createWriteStream("./access.log", { flags: "a" });
+// const logStream = fs.createWriteStream("./access.log", { flags: "a" });
 app.use(express.static("public"));
-app.use(logger("dev", { stream: logStream }));
+// app.use(logger("dev", { stream: logStream }));
 app.use(logger("dev"));
 app.use(jsonParser);
 app.use(cookieParser());
