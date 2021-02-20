@@ -57,7 +57,7 @@ const Login: React.FC<Props> = ({ setUserAsync }: Props) => {
 	);
 };
 
-const mapDispatchToProps = (dispatch: React.Dispatch<Action | Function>) => ({
+const mapDispatchToProps = (dispatch: React.Dispatch<Action | Function | Promise<any>>) => ({
 	setUserAsync: async(email: string, password: string) => {
 		await dispatch(setUserAsync({ email, password }));
 	},
