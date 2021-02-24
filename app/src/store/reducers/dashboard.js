@@ -1,6 +1,20 @@
 import user from "./user";
 
-const initialState = [];
+const initialState = [
+	{
+		title: "вфывфывф",
+		categories: [
+			{
+				title: "вфывфыв",
+				elements: [
+					{
+						title: "213213",
+					},
+				],
+			},
+		],
+	},
+];
 
 const dashboard = (state = initialState, action) => {
 	switch (action.type) {
@@ -8,7 +22,7 @@ const dashboard = (state = initialState, action) => {
 		return [...state, ...action.payload];
 	}
 	case "GET_TREE_SUCCESS": {
-		return action.payload;
+		return action.payload || state;
 	}
 	case "DELETE_TREE_SUCCESS": {
 		const _arr = [...state];
@@ -16,7 +30,7 @@ const dashboard = (state = initialState, action) => {
 		return _arr;
 	}
 	case "EDIT_EXISTING_TREE":
-		return state;
+		return [...state, ...action.payload];
 	default:
 		return state;
 	}

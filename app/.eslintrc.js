@@ -54,6 +54,7 @@ module.exports = {
 		"no-underscore-dangle": ["off"],
 		"no-debugger": ["off"],
 		"no-restricted-syntax": ["off"],
+		"no-redeclare": "off",
 		"guard-for-in": ["off"],
 		"import/extensions": [
 			"error",
@@ -88,5 +89,6 @@ module.exports = {
 		"@typescript-eslint/no-use-before-define": ["error"],
 		"@typescript-eslint/ban-types": ["off"],
 		"@typescript-eslint/no-unused-vars": [process.env.NODE_ENV === "production" ? "error" : "off"],
+		"@typescript-eslint/no-redeclare": ["error"],
 	},
 };

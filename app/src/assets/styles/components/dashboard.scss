@@ -91,8 +91,8 @@
             font-weight: 700;
             background-color: #f2f2f2;
             padding: 7.5px 15px;
-            margin-bottom: 15px;
             border-radius: 5px;
+            position: relative;
         }
     }
 
@@ -109,33 +109,37 @@
             font-size: 16px;
             font-weight: 500;
             background-color: #e6e6e6;
-            padding: 3.25px 7.5px;
-            margin-bottom: 15px;
+            // padding: 3.25px 7.5px;
+            padding: 7.5px 15px;
             border-radius: 3px;
+            position: relative;
         }
     }
 
     &__element {
         padding-left: 15px;
-        margin-left: 15px;
-        margin-bottom: 15px;
-
-        background-color: #d9d9d9;
-        padding: 3.25px 7.5px;
-        border-radius: 3px;
 
         &:last-of-type {
             margin-bottom: 0;
         }
+
+        &-name {
+            background-color: #d9d9d9;
+            // padding: 3.25px 7.5px;
+            padding: 7.5px 15px;
+            border-radius: 3px;
+            position: relative;
+        }
     }
 
     &__item {
-        position: relative;
+        &-wrapper {
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 15px;
+        }
 
-        &-delete {
-            position: absolute;
-            right: 15px;
-            top: 5px;
+        &-icon {
             width: 25px;
             height: 25px;
             transition: .2s;
@@ -144,10 +148,68 @@
             background-position: center;
             cursor: pointer;
             margin-right: 5px;
-            background-image: url('../../images/icons/delete-button.svg');
+
+            &:last-of-type {
+                margin-right: 0;
+            }
 
             &:hover {
                 transform: scale(1.2);
+            }
+
+            &_add {
+                background-image: url('../../images/icons/add-button.svg');
+            }
+
+            &_edit {
+                background-image: url('../../images/icons/pen.svg');
+
+                [class$='_editable'] & {
+                    transform: translate(0, 150%);
+
+                    &:hover {
+                        transform: scale(1.2) translate(0, 130%);
+                    }
+                }
+            }
+
+            &_remove {
+                background-image: url('../../images/icons/delete-button.svg');
+            }
+
+            &_save {
+                background-image: url('../../images/icons/checked.svg');
+                transform: translate(calc(100% + 5px), -150%);
+
+                &:hover {
+                    transform: scale(1.2) translate(calc(80% + 5px), -130%);
+
+                }
+
+                [class$='_editable'] & {
+                    transform: translate(calc(100% + 5px), 0%);
+
+                    &:hover {
+                        transform: scale(1.2) translate(calc(80% + 5px), 0%);
+                    }
+                }
+            }
+
+            &_refresh {
+                background-image: url('../../images/icons/refresh.svg');
+                transform: translate(calc(80% + 5px), -150%);
+
+                &:hover {
+                    transform: scale(1.2) translate(calc(80% + 5px), -130%);
+                }
+
+                [class$='_editable'] & {
+                    transform: translate(calc(100% + 5px), 0);
+
+                    &:hover {
+                        transform: scale(1.2) translate(calc(80% + 5px), 0);
+                    }
+                }
             }
 
             &_disabled {
@@ -158,6 +220,15 @@
                     transform: none;
                 }
             }
+        }
+
+        &-tools {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            align-items: center;
         }
     }
 
@@ -292,6 +363,27 @@
         border-radius: 5px;
         box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
         transition: .2s;
+
+        .dashboard__item & {
+            height: initial;
+            box-shadow: none;
+            padding: 7.5px 15px;
+        }
+
+        .dashboard__section & {
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .dashboard__category & {
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        .dashboard__element & {
+            font-size: 14px;
+            font-weight: 400;
+        }
 
         &:focus {
             box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);

@@ -60,7 +60,7 @@ const Dashboard: React.FC<Props> = ({ dashboard, getTreeAsync }: Props) => {
 					<div className="dashboard__block">
 						<DashboardForm visible={isActiveForm} data={dashboard} />
 						<div className={`dashboard__grid ${isActiveForm ? "dashboard__grid_active" : ""}`}>
-							<DashboardList data={dashboard} />
+							<DashboardList />
 						</div>
 					</div>
 				</div>
