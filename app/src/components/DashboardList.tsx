@@ -53,13 +53,15 @@ const DashboardList: React.FC<Props> = ({
 		}
 	}, [dashboard]);
 
+	function refreshSection(sectionId: number) {
+		const tree: Array<Tree> = [...dashboard];
+		tree[sectionId] = localTree[sectionId];
+		editTree(tree);
+	}
+
 	function saveEditedTree(sectionId: string, value: Section) {
-		if (JSON.stringify(localTree) !== JSON.stringify(dashboard)) {
-			editTreeAsync(value);
-			setSectionEditable(sectionId);
-		} else {
-			setSectionEditable(sectionId);
-		}
+		editTreeAsync(value);
+		setSectionEditable(sectionId);
 	}
 	
 	function changeElementValue(type: string, value: string, sectionId?: number, categoryId?: number, elementId?: number): void {
@@ -169,7 +171,7 @@ const DashboardList: React.FC<Props> = ({
 							)
 						}
 						<div className={`dashboard__item-tools ${section.editable ? "dashboard__item-tools_editable" : ""}`}>
-							<span className="dashboard__item-icon dashboard__item-icon_refresh" onClick={(e: SyntheticEvent) => editTreeAsync(section)}></span>
+							<span className="dashboard__item-icon dashboard__item-icon_refresh" onClick={(e: SyntheticEvent) => refreshSection(sectionId)}></span>
 							<span className="dashboard__item-icon dashboard__item-icon_save" onClick={(e: SyntheticEvent) => saveEditedTree(section._id, section)}></span>
 							<span className="dashboard__item-icon dashboard__item-icon_edit" onClick={(e: SyntheticEvent) => setSectionEditable(section._id)}></span>
 							<span className="dashboard__item-icon dashboard__item-icon_remove" onClick={(e: SyntheticEvent) => deleteTreeAsync(section._id)}></span>
