@@ -15,15 +15,13 @@ export const setTreeError = (err) => ({
 });
 
 export const setTreeAsync = (payload) => (dispatch) => {
-	dispatch(setTreeSuccess(payload));
-
-	// dispatch(setTreeStarted);
-	// API.post("dashboard", payload)
-	// 	.then((res) => {
-	// 		dispatch(setTreeSuccess(res.data));
-	// 	}).catch((err) => {
-	// 		dispatch(setTreeError(err));
-	// 	});
+	dispatch(setTreeStarted);
+	API.post("dashboard", payload)
+		.then((res) => {
+			dispatch(setTreeSuccess(res.data));
+		}).catch((err) => {
+			dispatch(setTreeError(err));
+		});
 };
 
 export const getTreeStarted = () => ({
@@ -41,15 +39,13 @@ export const getTreeError = (err) => ({
 });
 
 export const getTreeAsync = () => (dispatch) => {
-	dispatch(getTreeSuccess());
-
-	// dispatch(getTreeStarted);
-	// API.get("dashboard")
-	// 	.then((res) => {
-	// 		dispatch(getTreeSuccess(res.data));
-	// 	}).catch((err) => {
-	// 		dispatch(getTreeError(err));
-	// 	});
+	dispatch(getTreeStarted);
+	API.get("dashboard")
+		.then((res) => {
+			dispatch(getTreeSuccess(res.data));
+		}).catch((err) => {
+			dispatch(getTreeError(err));
+		});
 };
 
 export const deleteTreeStarted = () => ({
@@ -67,26 +63,32 @@ export const deleteTreeError = (err) => ({
 });
 
 export const deleteTreeAsync = (id) => (dispatch) => {
-	dispatch(deleteTreeSuccess({ id }));
-
-	// dispatch(deleteTreeStarted());
-	// API.delete("dashboard", { data: { id } })
-	// 	.then((res) => {
-	// 		dispatch(deleteTreeSuccess(res.data));
-	// 	}).catch((err) => {
-	// 		console.error(err);
-	// 		dispatch(deleteTreeError(err));
-	// 	});
+	dispatch(deleteTreeStarted());
+	API.delete("dashboard", { data: { _id: id } })
+		.then((res) => {
+			dispatch(deleteTreeSuccess(res.data));
+		}).catch((err) => {
+			console.error(err);
+			dispatch(deleteTreeError(err));
+		});
 };
+
+export const editTree = (payload) => ({
+	type: "EDIT_TREE",
+	payload,
+});
+
+export const setSectionEditable = (id) => ({
+	type: "SET_SECTION_EDITABLE",
+	id,
+});
 
 export const editTreeStarted = () => ({
 	type: "EDIT_TREE_STARTED",
 });
 
-export const editTreeSuccess = (payload) => ({
+export const editTreeSuccess = () => ({
 	type: "EDIT_TREE_SUCCESS",
-	id: payload.id,
-	keyName: payload.id,
 });
 
 export const editTreeError = (err) => ({
@@ -94,15 +96,13 @@ export const editTreeError = (err) => ({
 	err,
 });
 
-export const editTreeAsync = (keyName, id) => (dispatch) => {
-	dispatch(editTreeSuccess({ id, keyName }));
-
-	// dispatch(deleteTreeStarted());
-	// API.delete("dashboard", { data: { id } })
-	// 	.then((res) => {
-	// 		dispatch(deleteTreeSuccess(res.data));
-	// 	}).catch((err) => {
-	// 		console.error(err);
-	// 		dispatch(deleteTreeError(err));
-	// 	});
+export const editTreeAsync = (payload) => (dispatch) => {
+	dispatch(editTreeStarted());
+	const _payload = ({ editable, ...item }) => item;
+	API.put("dashboard", _payload(payload))
+		.then((res) => {
+			dispatch(editTreeSuccess());
+		}).catch((err) => {
+			dispatch(editTreeError(err));
+		});
 };

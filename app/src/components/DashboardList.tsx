@@ -1,7 +1,11 @@
-import React, { SyntheticEvent, useState } from "react";
+import React, {
+	SyntheticEvent, useState, useMemo, useEffect,
+} from "react";
 import { connect } from "react-redux";
 
-import { deleteTreeAsync, editTreeAsync } from "@/store/actions/dashboard";
+import {
+	deleteTreeAsync, editTreeAsync, editTree, setSectionEditable,
+} from "@/store/actions/dashboard";
 import { Action } from "../../node_modules/redux/index";
 
 type Props = StateProps & DispatchProps
@@ -9,7 +13,8 @@ type Props = StateProps & DispatchProps
 interface Section {
     title: string,
     categories: Array<Category>,
-	_id: string
+	_id: string,
+	editable: boolean
 }
 
 interface Category {
@@ -32,17 +37,31 @@ interface StateProps {
 
 interface DispatchProps {
 	deleteTreeAsync: (id: string) => void,
-	editTreeAsync: (tree: Array<Tree>) => void
+	editTreeAsync: (value: Section) => void,
+	editTree: (tree: Array<Tree>) => void,
+	setSectionEditable: (id: string) => void
 }
 
-const DashboardList: React.FC<Props> = ({ dashboard, deleteTreeAsync, editTreeAsync }: Props) => {
-	const [editActive, setEditActive] = useState(false);
-	
-	function editCurrentTree(keyName: string, id: string) {
-		setEditActive(!editActive);
-		// editTreeAsync("section", section._id)
-	}
+const DashboardList: React.FC<Props> = ({
+	dashboard, deleteTreeAsync, editTreeAsync, editTree, setSectionEditable,
+}: Props) => {
+	const [localTree, setLocalTree] = useState([]);
 
+	useEffect(() => {
+		if (dashboard.length && !localTree.length) {
+			setLocalTree([...dashboard]);
+		}
+	}, [dashboard]);
+
+	function saveEditedTree(sectionId: string, value: Section) {
+		if (JSON.stringify(localTree) !== JSON.stringify(dashboard)) {
+			editTreeAsync(value);
+			setSectionEditable(sectionId);
+		} else {
+			setSectionEditable(sectionId);
+		}
+	}
+	
 	function changeElementValue(type: string, value: string, sectionId?: number, categoryId?: number, elementId?: number): void {
 		let tree: Array<Tree> = [...dashboard];
 		if (type === "section") {
@@ -130,7 +149,7 @@ const DashboardList: React.FC<Props> = ({ dashboard, deleteTreeAsync, editTreeAs
 				console.error(err);
 			}
 		}
-		// editTreeAsync(tree);
+		editTree(tree);
 	}
 
 	return (
@@ -139,7 +158,7 @@ const DashboardList: React.FC<Props> = ({ dashboard, deleteTreeAsync, editTreeAs
 				<div className="dashboard__section dashboard__item" key={sectionId}>
 					<div className="dashboard__item-wrapper">
 						{
-							!editActive ? (
+							!section.editable ? (
 								<div className="dashboard__section-name">
 									<span>{section.title}</span>
 								</div>
@@ -149,17 +168,17 @@ const DashboardList: React.FC<Props> = ({ dashboard, deleteTreeAsync, editTreeAs
 								</label>
 							)
 						}
-						<div className={`dashboard__item-tools ${editActive ? "dashboard__item-tools_editable" : ""}`}>
-							<span className="dashboard__item-icon dashboard__item-icon_refresh" onClick={(e: SyntheticEvent) => editCurrentTree("section", section._id)}></span>
-							<span className="dashboard__item-icon dashboard__item-icon_save" onClick={(e: SyntheticEvent) => editCurrentTree("section", section._id)}></span>
-							<span className="dashboard__item-icon dashboard__item-icon_edit" onClick={(e: SyntheticEvent) => editCurrentTree("section", section._id)}></span>
+						<div className={`dashboard__item-tools ${section.editable ? "dashboard__item-tools_editable" : ""}`}>
+							<span className="dashboard__item-icon dashboard__item-icon_refresh" onClick={(e: SyntheticEvent) => editTreeAsync(section)}></span>
+							<span className="dashboard__item-icon dashboard__item-icon_save" onClick={(e: SyntheticEvent) => saveEditedTree(section._id, section)}></span>
+							<span className="dashboard__item-icon dashboard__item-icon_edit" onClick={(e: SyntheticEvent) => setSectionEditable(section._id)}></span>
 							<span className="dashboard__item-icon dashboard__item-icon_remove" onClick={(e: SyntheticEvent) => deleteTreeAsync(section._id)}></span>
 						</div>
 					</div>
 					{section.categories.map((category: Category, categoryId: number) => (
 						<div className="dashboard__category dashboard__item" key={categoryId}>
 							<div className="dashboard__item-wrapper">
-								{!editActive ? (
+								{!section.editable ? (
 									<div className="dashboard__category-name">
 										<span>{category.title}</span>
 									</div>
@@ -176,7 +195,7 @@ const DashboardList: React.FC<Props> = ({ dashboard, deleteTreeAsync, editTreeAs
 							{category.elements.map((element: Element, elementId: number) => (
 								<div className="dashboard__element dashboard__item" key={elementId}>
 									<div className="dashboard__item-wrapper">
-										{!editActive ? (
+										{!section.editable ? (
 											<div className="dashboard__element-name">
 												<span>{element.title}</span>
 											</div>
@@ -207,8 +226,14 @@ const mapDispatchToProps = (dispatch: React.Dispatch<Action | Function>) => ({
 	deleteTreeAsync: (id: string) => {
 		dispatch(deleteTreeAsync(id));
 	},
-	editTreeAsync: (tree: Array<Tree>) => {
-		dispatch(editTreeAsync(tree));
+	editTreeAsync: (value: Section) => {
+		dispatch(editTreeAsync(value));
+	},
+	editTree: (tree: Array<Tree>) => {
+		dispatch(editTree(tree));
+	},
+	setSectionEditable: (id: string) => {
+		dispatch(setSectionEditable(id));
 	},
 });
 
