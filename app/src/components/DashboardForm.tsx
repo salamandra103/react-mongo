@@ -224,7 +224,7 @@ const DashboardForm: React.FC<Props> = ({
 					<div className="dashboard__form-container" key={sectionId}>
 						<div className="dashboard__form-block dashboard__form-block_section">
 							<div className="dashboard__form-tools">
-								<span className={`dashboard__form-icon dashboard__form-icon_add ${tree.length >= 3 ? "dashboard__form-icon_disabled" : ""}`} onClick={(e: SyntheticEvent) => addElement("section")}></span>
+								<span className={`dashboard__form-icon dashboard__form-icon_add ${(tree.length + data.length) >= 3 ? "dashboard__form-icon_disabled" : ""}`} onClick={(e: SyntheticEvent) => addElement("section")}></span>
 								<span className={`dashboard__form-icon dashboard__form-icon_remove ${tree.length <= 1 ? "dashboard__form-icon_disabled" : ""}`} onClick={(e: SyntheticEvent) => removeElement("section")}></span>
 							</div>
     
@@ -236,7 +236,7 @@ const DashboardForm: React.FC<Props> = ({
 							<React.Fragment key={categoryId}>
 								<div className="dashboard__form-block dashboard__form-block_category">
 									<div className="dashboard__form-tools">
-										<span className={`dashboard__form-icon dashboard__form-icon_add ${tree[sectionId].categories.length >= 3 ? "dashboard__form-icon_disabled" : ""}`} onClick={(e: SyntheticEvent) => addElement("category", sectionId)}></span>
+										<span className={`dashboard__form-icon dashboard__form-icon_add ${(tree[sectionId].categories.length >= 3 || (tree.length + data.length) >= 3) ? "dashboard__form-icon_disabled" : ""}`} onClick={(e: SyntheticEvent) => addElement("category", sectionId)}></span>
 										<span className={`dashboard__form-icon dashboard__form-icon_remove ${tree[sectionId].categories.length <= 1 ? "dashboard__form-icon_disabled" : ""}`} onClick={(e: SyntheticEvent) => removeElement("category", sectionId)}></span>
 									</div>
 									<label htmlFor="" className="dashboard__label">
@@ -246,7 +246,7 @@ const DashboardForm: React.FC<Props> = ({
 								{category.elements.map((element: Element, elementId: number) => (
 									<div className="dashboard__form-block dashboard__form-block_element" key={elementId}>
 										<div className="dashboard__form-tools">
-											<span className={`dashboard__form-icon dashboard__form-icon_add ${tree[sectionId].categories[categoryId].elements.length >= 3 ? "dashboard__form-icon_disabled" : ""}`} onClick={(e: SyntheticEvent) => addElement("element", sectionId, categoryId)}></span>
+											<span className={`dashboard__form-icon dashboard__form-icon_add ${(tree[sectionId].categories[categoryId].elements.length >= 3 || (tree.length + data.length) >= 3) ? "dashboard__form-icon_disabled" : ""}`} onClick={(e: SyntheticEvent) => addElement("element", sectionId, categoryId)}></span>
 											<span className={`dashboard__form-icon dashboard__form-icon_remove ${tree[sectionId].categories[categoryId].elements.length <= 1 ? "dashboard__form-icon_disabled" : ""}`} onClick={(e: SyntheticEvent) => removeElement("element", sectionId, categoryId)}></span>
 										</div>
 										<label htmlFor="" className="dashboard__label">
