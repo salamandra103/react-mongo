@@ -7,6 +7,7 @@ import {
 	deleteTreeAsync, editTreeAsync, editTree, setSectionEditable,
 } from "@/store/actions/dashboard";
 import { Action } from "../../node_modules/redux/index";
+import { AxiosPromise, AxiosResponse } from "../../node_modules/axios/index";
 
 type Props = StateProps & DispatchProps
 
@@ -37,7 +38,7 @@ interface StateProps {
 
 interface DispatchProps {
 	deleteTreeAsync: (id: string) => void,
-	editTreeAsync: (value: Section) => void,
+	editTreeAsync: (value: Section) => any,
 	editTree: (tree: Array<Tree>) => void,
 	setSectionEditable: (id: string) => void
 }
@@ -54,12 +55,9 @@ const DashboardList: React.FC<Props> = ({
 	}, [dashboard]);
 
 	function saveEditedTree(sectionId: string, value: Section) {
-		if (JSON.stringify(localTree) !== JSON.stringify(dashboard)) {
-			editTreeAsync(value);
+		editTreeAsync(value).then(() => {
 			setSectionEditable(sectionId);
-		} else {
-			setSectionEditable(sectionId);
-		}
+		});
 	}
 	
 	function changeElementValue(type: string, value: string, sectionId?: number, categoryId?: number, elementId?: number): void {
@@ -226,9 +224,7 @@ const mapDispatchToProps = (dispatch: React.Dispatch<Action | Function>) => ({
 	deleteTreeAsync: (id: string) => {
 		dispatch(deleteTreeAsync(id));
 	},
-	editTreeAsync: (value: Section) => {
-		dispatch(editTreeAsync(value));
-	},
+	editTreeAsync: (value: Section) => dispatch(editTreeAsync(value)),
 	editTree: (tree: Array<Tree>) => {
 		dispatch(editTree(tree));
 	},

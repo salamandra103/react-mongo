@@ -99,7 +99,7 @@ export const editTreeError = (err) => ({
 export const editTreeAsync = (payload) => (dispatch) => {
 	dispatch(editTreeStarted());
 	const _payload = ({ editable, ...item }) => item;
-	API.put("dashboard", _payload(payload))
+	return API.put("dashboard", _payload(payload))
 		.then((res) => {
 			dispatch(editTreeSuccess());
 		}).catch((err) => {
